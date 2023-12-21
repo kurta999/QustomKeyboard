@@ -1,0 +1,76 @@
+﻿{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "linux-debug",
+      "displayName": "Linux Debug",
+      "description": "Target the Windows Subsystem for Linux (WSL) or a remote Linux system.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cmakeExecutable": "C:/Tools/cmake-3.24.2-windows-arm64/bin/cmake.exe",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "C:/Qt/6.5.0/mingw_64"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "vendor": { "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": { "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}" } }
+    },
+    {
+      "name": "windows-base",
+      "description": "Target Windows with the Visual Studio development environment.",
+      "hidden": true,
+      "generator": "Visual Studio 17 2022",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cmakeExecutable": "C:/Qt/Tools/CMake_64/bin/cmake.exe",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "C:/Qt/Qt-6.5.0"
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "x64-debug",
+      "displayName": "x64 Debug",
+      "description": "Target Windows (64-bit) with the Visual Studio development environment. (Debug)",
+      "inherits": "windows-base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_PREFIX_PATH": "C:/Qt/Qt-6.5.0",
+        "Boost_INCLUDE_DIR": "C:/Program Files/boost/boost_1_82_0",
+        "CMAKE_BUILD_PARALLEL_LEVEL": "16"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [ "Windows" ]
+        }
+      },
+      "environment": {
+        "QT_DEBUG_PLUGINS": "1",
+        "QT_QPA_PLATFORM_PLUGIN_PATH": "C:\\Qt\\Qt-6.5.0\\plugins\\platforms",
+        "PATH": "C:\\Qt\\Qt-6.5.0\\bin;{PATH}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "displayName": "X64 debug2",
+      "configurePreset": "windows-base",
+      "name": "default",
+      "jobs": 16
+    }
+  ]
+}
